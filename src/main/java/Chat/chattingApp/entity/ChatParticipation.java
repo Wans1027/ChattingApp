@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Optional;
+
 @Entity
 @AllArgsConstructor
 @Getter
@@ -19,4 +21,9 @@ public class ChatParticipation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chattingRoom_id")
     private ChattingRoom chattingRoom;
+
+    public ChatParticipation(Member member, ChattingRoom chattingRoom) {
+        this.member = member;
+        this.chattingRoom = chattingRoom;
+    }
 }
