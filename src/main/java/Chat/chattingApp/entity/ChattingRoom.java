@@ -22,8 +22,7 @@ public class ChattingRoom extends TimeEntity {
     private String roomState;
     @OneToMany(mappedBy = "chattingRoom")
     private List<ChatParticipation> chatParticipationList;
-    @OneToMany(mappedBy = "chattingRoom")
-    private List<Message> messages;
+
 
     public ChattingRoom(String roomName, String roomState) {
         this.roomName = roomName;
