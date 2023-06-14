@@ -15,6 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Transactional(readOnly = true)
     @Query("select m from Member m where m.name = :name and m.email = :email")
-    Optional<Member> findByNameAndEmail(@Param("name")String name, @Param("email") String email);
+    Member findByNameAndEmail(@Param("name")String name, @Param("email") String email);
 
 }

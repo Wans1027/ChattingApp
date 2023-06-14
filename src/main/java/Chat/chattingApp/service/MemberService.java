@@ -20,8 +20,12 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member loginByNameAndEmail(String name, String email) {
-        return memberRepository.findByNameAndEmail(name, email).orElseThrow();
+    public Long loginByNameAndEmail(String name, String email) throws Exception {
+        Member m = memberRepository.findByNameAndEmail(name, email);
+        if(m == null) throw new Exception();
+        else{
+            return m.getId();
+        }
     }
 
 }

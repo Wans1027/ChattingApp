@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +27,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public void loginMember(@RequestBody @Valid MemberRegDTO request) {
-
+    public ResponseEntity loginMember(@RequestBody @Valid MemberRegDTO request) {
+        try {
+            Long memberId = memberService.loginByNameAndEmail(request.name, request.email);
+            return ResponseEntity.ok(memberId); //로그인에 성공하면 200 과 유저 id를 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(400).build(); //로그인에 실패하면 400 반환
+        }
     }
 
 
