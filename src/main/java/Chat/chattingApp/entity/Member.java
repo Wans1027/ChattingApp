@@ -1,0 +1,27 @@
+package Chat.chattingApp.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@AllArgsConstructor
+public class Member {
+    @Id
+    @GeneratedValue
+    @Column(name = "member_id")
+    private long id;
+    @NotEmpty
+    private String name;
+    @Email
+    private String email;
+    @OneToMany(mappedBy = "member")
+    private List<ChatParticipation> chatParticipationList = new ArrayList<>();
+
+
+
+}
