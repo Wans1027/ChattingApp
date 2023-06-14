@@ -15,4 +15,9 @@ public class Message extends TimeEntity {
     private String detailMessage;
     private Boolean isCheck;
 
+    public Message(Long chattingRoomId, Long messageId, String detailMessage) {
+        this.chattingRoomId = chattingRoomId;
+        this.messageId = messageId;
+        this.detailMessage = detailMessage;
+    }
 }
