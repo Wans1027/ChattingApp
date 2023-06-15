@@ -27,13 +27,21 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginMember(@RequestBody @Valid MemberRegDTO request) {
-        try {
+    public Member loginMember(@RequestBody @Valid MemberRegDTO request) {
+        /*try {
             Long memberId = memberService.loginByNameAndEmail(request.name, request.email);
+            log.info("여기까지 오나???");
             return ResponseEntity.ok(memberId); //로그인에 성공하면 200 과 유저 id를 반환
+
         } catch (Exception e) {
+            log.info("로그인실패!!");
             return ResponseEntity.status(400).build(); //로그인에 실패하면 400 반환
-        }
+        }*/
+
+        Member member = memberService.loginByNameAndEmail(request.name, request.email);
+        log.info("여기까지 오나???");
+        return member;
+        //return ResponseEntity.ok(memberId); //로그인에 성공하면 200 과 유저 id를 반환
     }
 
 
