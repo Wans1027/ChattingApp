@@ -22,7 +22,7 @@ public interface ChatPartRepository extends JpaRepository<ChatParticipation, Lon
 
     @EntityGraph(attributePaths = {"member", "chattingRoom"})
     @Query("select c.chattingRoom from ChatParticipation c where c.member.id = :memberId")
-    List<ChattingRoom> findChatRoomListByUser(@Param("roomId") Long memberId);
+    List<ChattingRoom> findChatRoomListByUser(@Param("memberId") Long memberId);
 
 
 }

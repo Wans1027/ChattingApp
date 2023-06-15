@@ -11,13 +11,13 @@ public class Message extends TimeEntity {
     @Column(name = "message_id")
     private Long id;
     private Long chattingRoomId;
-    private Long messageId;
+    private Long messageSequence;
     private String detailMessage;
     private Boolean isCheck;
 
-    public Message(Long chattingRoomId, Long messageId, String detailMessage) {
+    public Message(Long chattingRoomId, Long messageSequence, String detailMessage) {
         this.chattingRoomId = chattingRoomId;
-        this.messageId = messageId;
+        this.messageSequence = messageSequence;
         this.detailMessage = detailMessage;
     }
 }
