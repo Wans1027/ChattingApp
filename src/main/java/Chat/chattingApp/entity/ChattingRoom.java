@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
 @Entity
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class ChattingRoom extends TimeEntity {
     @Id
