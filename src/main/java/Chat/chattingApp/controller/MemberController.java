@@ -5,6 +5,7 @@ import Chat.chattingApp.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +29,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> loginMember(@RequestBody @Valid MemberRegDTO request) {
+    public ResponseEntity<responseMemberId> loginMember(@RequestBody @Valid MemberRegDTO request) {
 
 
         Member member = memberService.loginByNameAndEmail(request.name, request.email);
         if(member == null) return new ResponseEntity<>(HttpStatusCode.valueOf(400));
-        return ResponseEntity.ok(member.getId());
+        return ResponseEntity.ok(new responseMemberId(member.getId()));
 
     }
 
@@ -44,5 +45,11 @@ public class MemberController {
         private String name;
         @Email
         private String email;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class responseMemberId {
+        private Long memberId;
     }
 }
