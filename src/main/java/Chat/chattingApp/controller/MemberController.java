@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,21 +28,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public Member loginMember(@RequestBody @Valid MemberRegDTO request) {
-        /*try {
-            Long memberId = memberService.loginByNameAndEmail(request.name, request.email);
-            log.info("여기까지 오나???");
-            return ResponseEntity.ok(memberId); //로그인에 성공하면 200 과 유저 id를 반환
+    public ResponseEntity<Long> loginMember(@RequestBody @Valid MemberRegDTO request) {
 
-        } catch (Exception e) {
-            log.info("로그인실패!!");
-            return ResponseEntity.status(400).build(); //로그인에 실패하면 400 반환
-        }*/
 
         Member member = memberService.loginByNameAndEmail(request.name, request.email);
-        log.info("여기까지 오나???");
-        return member;
-        //return ResponseEntity.ok(memberId); //로그인에 성공하면 200 과 유저 id를 반환
+        if(member == null) return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+        return ResponseEntity.ok(member.getId());
+
     }
 
 
