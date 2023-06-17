@@ -12,12 +12,14 @@ public class Message extends TimeEntity {
     private Long id;
     private Long chattingRoomId;
     private Long messageSequence;
+    private Long senderId;
     private String detailMessage;
     private Boolean isCheck;
 
-    public Message(Long chattingRoomId, Long messageSequence, String detailMessage) {
+    public Message(Long chattingRoomId, Long messageSequence, Long senderId,String detailMessage) {
         this.chattingRoomId = chattingRoomId;
         this.messageSequence = messageSequence;
+        this.senderId = senderId;
         this.detailMessage = detailMessage;
     }
 }

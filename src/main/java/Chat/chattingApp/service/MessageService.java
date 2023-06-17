@@ -16,7 +16,7 @@ public class MessageService {
 
     public void sendMessage(Long roomId, String detailMessage, Long senderId) {
         Long messageId = messageRepository.findMinIdInGroup(roomId).orElse(0L);
-        Message message = new Message(roomId, messageId + 1, detailMessage);
+        Message message = new Message(roomId, messageId + 1, senderId, detailMessage);
         messageRepository.save(message);
     }
 
