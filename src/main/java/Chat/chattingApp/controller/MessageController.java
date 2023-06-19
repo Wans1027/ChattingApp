@@ -22,7 +22,7 @@ public class MessageController {
     @PostMapping("/sendMessage")
     public void sendMessage(@RequestBody SendMessage request){
         //DB 저장로직
-        messageService.sendMessage(request.roomId, request.detailMessage, request.senderId);
+        messageService.sendMessage(Message.MessageType.TALK,request.roomId, request.detailMessage, request.senderId);
     }
 
     @MessageMapping("/chat/message")

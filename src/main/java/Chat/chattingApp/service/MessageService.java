@@ -14,7 +14,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public void sendMessage(Long roomId, String detailMessage, Long senderId) {
+    public void sendMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
         Long messageId = messageRepository.findMinIdInGroup(roomId).orElse(0L);
         Message message = new Message(Message.MessageType.TALK, roomId, messageId + 1, senderId, detailMessage);
         messageRepository.save(message);
