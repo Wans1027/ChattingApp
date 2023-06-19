@@ -1,5 +1,6 @@
 package Chat.chattingApp.controller;
 
+import Chat.chattingApp.entity.Message;
 import Chat.chattingApp.service.MessageService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +26,11 @@ public class MessageController {
     }
 
     @MessageMapping("/chat/message")
-    public void enter(ChatMessage message) {
-        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            message.setMessage(message.getSender()+"님이 입장하였습니다.");
+    public void enter(Message message) {
+        if (Message.MessageType.ENTER.equals(message.getType())) {
+            message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
         }
-        sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
+        sendingOperations.convertAndSend("/topic/chat/room/"+message.getChattingRoomId(),message);
     }
 
 
