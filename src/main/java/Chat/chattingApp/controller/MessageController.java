@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     private final MessageService messageService;
+    private final SimpMessageSendingOperations sendingOperations;
 
     @PostMapping("/sendMessage")
     public void sendMessage(@RequestBody SendMessage request){
         //DB 저장로직
         messageService.sendMessage(request.roomId, request.detailMessage, request.senderId);
     }
-
-    private final SimpMessageSendingOperations sendingOperations;
 
     @MessageMapping("/chat/message")
     public void enter(ChatMessage message) {
