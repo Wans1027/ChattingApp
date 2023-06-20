@@ -21,9 +21,9 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-
+        // 메세지 구독 요청 url -> 메세지 받을 때
         registry.enableSimpleBroker("/queue", "/topic");
-
+        // 메세지 발행 요청 url -> 메세지 보낼 때
         registry.setApplicationDestinationPrefixes("/app");
     }
 
