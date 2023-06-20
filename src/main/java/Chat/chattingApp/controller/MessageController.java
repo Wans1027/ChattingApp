@@ -36,6 +36,7 @@ public class MessageController {
 
     @Data
     private static class SendMessage{
+        Message.MessageType type;
         Long roomId;
         String detailMessage;
         Long senderId;
