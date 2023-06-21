@@ -33,4 +33,8 @@ public class MemberService {
         m.setEmail(newEmail);
     }
 
+    public void deleteMember(Long userId) {
+        memberRepository.deleteById(userId);
+    }
+
 }
