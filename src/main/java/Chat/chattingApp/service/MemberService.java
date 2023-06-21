@@ -27,4 +27,10 @@ public class MemberService {
         return m;
     }
 
+    public void modifyMember(String name, String email, String newName, String newEmail) {
+        Member m = memberRepository.findByNameAndEmail(name, email);
+        m.setName(newName);
+        m.setEmail(newEmail);
+    }
+
 }
