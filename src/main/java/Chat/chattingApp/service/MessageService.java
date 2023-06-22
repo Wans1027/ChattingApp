@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 @Service
@@ -20,9 +22,14 @@ public class MessageService {
     private static Queue<Message> messageQueue = new LinkedList<>();
     private final EntityManager em;
     private static final int messageQueueSize = 10;
+    static Map<Long, Long> map = new HashMap<>();
+    static long i = 0L;
     public void sendMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
         Long messageId = messageRepository.findMinIdInGroup(roomId).orElse(0L);
-        Message message = new Message(Message.MessageType.TALK, roomId, messageId + 1, senderId, detailMessage);
+
+        map.put(roomId, map.getOrDefault(roomId,messageId) + 1);
+
+        Message message = new Message(Message.MessageType.TALK, roomId, messageId + map.get(roomId), senderId, detailMessage);
         messageQueue.add(message);
         if(messageQueue.size() == messageQueueSize) commitMessageQueue();
         //messageRepository.save(message);
@@ -35,6 +42,7 @@ public class MessageService {
             em.persist(message);
         }
         em.flush();
+        map.clear();
     }
 
 }
