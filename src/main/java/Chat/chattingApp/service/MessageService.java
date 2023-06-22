@@ -25,7 +25,7 @@ public class MessageService {
     static Map<Long, Long> map = new HashMap<>();
     static long i = 0L;
     public void sendMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
-        Long messageId = messageRepository.findMinIdInGroup(roomId).orElse(0L);
+        Long messageId = messageRepository.findMaxIdInGroup(roomId).orElse(0L);
 
         map.put(roomId, map.getOrDefault(roomId,messageId) + 1);
 
