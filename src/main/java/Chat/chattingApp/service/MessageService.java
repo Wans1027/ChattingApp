@@ -3,9 +3,13 @@ package Chat.chattingApp.service;
 import Chat.chattingApp.entity.Message;
 import Chat.chattingApp.repository.MemberRepository;
 import Chat.chattingApp.repository.MessageRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 @Service
 @Transactional
@@ -13,11 +17,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-
+    private static Queue<Message> messageQueue = new LinkedList<>();
+    private final EntityManager em;
+    private static final int messageQueueSize = 10;
     public void sendMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
         Long messageId = messageRepository.findMinIdInGroup(roomId).orElse(0L);
         Message message = new Message(Message.MessageType.TALK, roomId, messageId + 1, senderId, detailMessage);
-        messageRepository.save(message);
+        messageQueue.add(message);
+        if(messageQueue.size() == messageQueueSize) commitMessageQueue();
+        //messageRepository.save(message);
+    }
+
+    public void commitMessageQueue() {
+        //쓰기 지연
+        for (int i = 0; i < messageQueueSize; i++) {
+            Message message = messageQueue.poll();
+            em.persist(message);
+        }
+        em.flush();
     }
 
 }
