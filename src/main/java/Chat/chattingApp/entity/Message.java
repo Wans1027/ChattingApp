@@ -20,22 +20,15 @@ public class Message extends TimeEntity {
 
     private MessageType type;
     private Long chattingRoomId;
-    private Long messageSequence;
     private Long senderId;
     private String detailMessage;
     private Boolean isCheck;
 
-    public Message(Long chattingRoomId, Long messageSequence, Long senderId,String detailMessage) {
-        this.chattingRoomId = chattingRoomId;
-        this.messageSequence = messageSequence;
-        this.senderId = senderId;
-        this.detailMessage = detailMessage;
-    }
 
-    public Message(MessageType type, Long chattingRoomId, Long messageSequence, Long senderId, String detailMessage) {
+
+    public Message(MessageType type, Long chattingRoomId, Long senderId, String detailMessage) {
         this.type = type;
         this.chattingRoomId = chattingRoomId;
-        this.messageSequence = messageSequence;
         this.senderId = senderId;
         this.detailMessage = detailMessage;
     }

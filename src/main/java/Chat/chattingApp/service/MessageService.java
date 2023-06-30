@@ -19,26 +19,14 @@ import java.util.Queue;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private static Queue<Message> messageQueue = new LinkedList<>();
+    private static final Queue<Message> messageQueue = new LinkedList<>();
     private final EntityManager em;
     private static final int messageQueueSize = 5;
-    static Map<Long, Long> map = new HashMap<>();
-    static long i = 0L;
+
+
     public void sendMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
-        //Long messageId = messageRepository.findMaxIdInGroup(roomId).orElse(0L);
 
-        //map.put(roomId, map.getOrDefault(roomId,messageRepository.findMaxIdInGroup(roomId).orElse(0L)) + 1L);
-
-        if(map.get(roomId) == null){
-            map.put(roomId, messageRepository.findMaxIdInGroup(roomId).orElse(0L) + 1L);
-        }
-        else {
-            Long seq = map.get(roomId);
-            map.put(roomId, seq + 1L);
-        }
-
-
-        Message message = new Message(Message.MessageType.TALK, roomId, map.get(roomId), senderId, detailMessage);
+        Message message = new Message(Message.MessageType.TALK, roomId, senderId, detailMessage);
         messageQueue.add(message);
         if(messageQueue.size() == messageQueueSize) commitMessageQueue();
         //messageRepository.save(message);
@@ -51,7 +39,6 @@ public class MessageService {
             em.persist(message);
         }
         em.flush();
-        map.clear();
     }
 
 }
