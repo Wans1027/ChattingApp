@@ -25,13 +25,14 @@ public class MessageController {
         messageService.sendMessage(Message.MessageType.TALK,request.roomId, request.detailMessage, request.senderId);
     }
 
-    @MessageMapping("/chat/message")
+    @MessageMapping("/message")
     public void enter(SendMessage message) {
         if (Message.MessageType.ENTER.equals(message.getType())) {
             message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
             messageService.sendMessage(Message.MessageType.ENTER,message.roomId, message.detailMessage, message.senderId);
         }
         else messageService.sendMessage(Message.MessageType.TALK,message.roomId, message.detailMessage, message.senderId);
+        log.info("roomID = {}", message.getRoomId());
         sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
     }
 
