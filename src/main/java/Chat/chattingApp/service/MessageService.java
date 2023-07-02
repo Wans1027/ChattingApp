@@ -29,7 +29,6 @@ public class MessageService {
         Message message = new Message(Message.MessageType.TALK, roomId, senderId, detailMessage);
         messageQueue.add(message);
         if(messageQueue.size() == messageQueueSize) commitMessageQueue();
-        //messageRepository.save(message);
     }
 
     public void commitMessageQueue() {
