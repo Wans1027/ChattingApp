@@ -23,10 +23,13 @@ class MessageServiceTest {
 
     @Test
     void saveMessage() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             messageRepository.save(new Message(TALK, 1L,1L,"Message"));
         }
-        messageService.saveMessage(TALK, 1L, "Message", 1L);
+        for (int i = 0; i < 30; i++) {
+            messageService.saveMessage(TALK, 1L, "Message", 1L);
+        }
+
 
     }
 }

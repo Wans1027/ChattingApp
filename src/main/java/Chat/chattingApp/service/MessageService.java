@@ -75,6 +75,10 @@ public class MessageService implements DisposableBean {
         return messageRepository.findMessageInChattingRoom(roomId);
     }
 
+    public List<Message> getMessagesInCache(Long roomId){
+        return messageMap.get(roomId).stream().toList();
+    }
+
     private void commitMessageQueue(Queue<Message> messageQueue) {
         //쓰기 지연
         for (int i = 0; i < messageQueue.size(); i++) {
