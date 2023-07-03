@@ -12,4 +12,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 //    @Query("select max(m.messageSequence) from Message m where m.chattingRoomId = :roomId")
 //    Optional<Long> findMaxIdInGroup(@Param("roomId") Long roomId);
 
+    @Query("select m from Message m where m.chattingRoomId = :roomId")
+    Message findMessageInChattingRoom(@Param("roomId") Long roomId);
 }
