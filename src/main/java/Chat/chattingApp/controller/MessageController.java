@@ -22,16 +22,16 @@ public class MessageController {
     @PostMapping("/sendMessage")
     public void sendMessage(@RequestBody SendMessage request){
         //DB 저장로직
-        messageService.sendMessage(Message.MessageType.TALK,request.roomId, request.detailMessage, request.senderId);
+        messageService.saveMessage(Message.MessageType.TALK,request.roomId, request.detailMessage, request.senderId);
     }
 
     @MessageMapping("/message")
     public void enter(SendMessage message) {
         if (Message.MessageType.ENTER.equals(message.getType())) {
             message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
-            messageService.sendMessage(Message.MessageType.ENTER,message.roomId, message.detailMessage, message.senderId);
+            messageService.saveMessage(Message.MessageType.ENTER,message.roomId, message.detailMessage, message.senderId);
         }
-        else messageService.sendMessage(Message.MessageType.TALK,message.roomId, message.detailMessage, message.senderId);
+        else messageService.saveMessage(Message.MessageType.TALK,message.roomId, message.detailMessage, message.senderId);
         log.info("roomID = {}", message.getRoomId());
         sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
     }

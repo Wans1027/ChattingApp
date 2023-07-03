@@ -24,7 +24,7 @@ public class MessageService {
     private static final int messageQueueSize = 5;
 
 
-    public void sendMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
+    public void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
 
         Message message = new Message(Message.MessageType.TALK, roomId, senderId, detailMessage);
         messageQueue.add(message);
@@ -36,6 +36,7 @@ public class MessageService {
         for (int i = 0; i < messageQueueSize; i++) {
             Message message = messageQueue.poll();
             em.persist(message);
+
         }
         em.flush();
     }
