@@ -1,5 +1,6 @@
 package Chat.chattingApp.controller;
 
+import Chat.chattingApp.dto.MessageDto;
 import Chat.chattingApp.entity.Message;
 import Chat.chattingApp.service.MessageService;
 import lombok.Data;
@@ -21,30 +22,10 @@ public class MessageController {
 
 
     @MessageMapping("/message")
-    public void sendMessage(SendMessage message) {
-        if (Message.MessageType.ENTER.equals(message.getType())) {
-            message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
-            messageService.saveMessage(Message.MessageType.ENTER,message.roomId, message.detailMessage, message.senderId);
-        }
-        else messageService.saveMessage(Message.MessageType.TALK,message.roomId, message.detailMessage, message.senderId);
+    public void sendMessage(MessageDto message) {
+        MessageDto messageDto = messageService.messageType(message);
         log.info("roomID = {}", message.getRoomId());
-        sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
+        sendingOperations.convertAndSend("/topic/chat/room/"+messageDto.getRoomId(),message);
     }
 
-
-    @Data
-    private static class SendMessage{
-        Message.MessageType type;
-        Long roomId;
-        String detailMessage;
-        Long senderId;
-    }
-
-    @Data
-    private static class MessageDto{
-        Message.MessageType type;
-        Long roomId;
-        String detailMessage;
-        Long senderId;
-    }
 }

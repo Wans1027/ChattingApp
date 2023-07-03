@@ -1,5 +1,6 @@
 package Chat.chattingApp.service;
 
+import Chat.chattingApp.dto.MessageDto;
 import Chat.chattingApp.entity.Message;
 import Chat.chattingApp.repository.MemberRepository;
 import Chat.chattingApp.repository.MessageRepository;
@@ -22,6 +23,14 @@ public class MessageService {
     private static final Queue<Message> messageQueue = new LinkedList<>();
     private final EntityManager em;
     private static final int messageQueueSize = 5;
+
+    public MessageDto messageType(MessageDto message) {
+        if (Message.MessageType.ENTER.equals(message.getType())) {
+            message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
+        }
+        saveMessage(message.getType(), message.getRoomId(), message.getDetailMessage(), message.getSenderId());
+        return message;
+    }
 
 
     public void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
