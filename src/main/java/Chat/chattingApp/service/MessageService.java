@@ -20,7 +20,7 @@ public class MessageService implements DisposableBean {
 
     private final MessageRepository messageRepository;
     //private static final Queue<Message> messageQueue = new LinkedList<>();
-    private static Map<Long, Queue<Message>> messageMap = new HashMap<>();
+    private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
     private final EntityManager em;
     private static final int messageQueueSize = 5;
 
