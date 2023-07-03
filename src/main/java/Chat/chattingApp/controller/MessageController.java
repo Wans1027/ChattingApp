@@ -24,7 +24,6 @@ public class MessageController {
     @MessageMapping("/message")
     public void sendMessage(MessageDto message) {
         MessageDto messageDto = messageService.messageType(message);
-        log.info("roomID = {}", message.getRoomId());
         sendingOperations.convertAndSend("/topic/chat/room/"+messageDto.getRoomId(),message);
     }
 
