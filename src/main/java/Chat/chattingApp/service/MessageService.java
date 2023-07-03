@@ -33,7 +33,7 @@ public class MessageService implements DisposableBean {
     }
 
 
-    public void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
+    private void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
 
         Message message = new Message(type, roomId, senderId, detailMessage);
         //messageQueue.add(message);
@@ -75,7 +75,7 @@ public class MessageService implements DisposableBean {
         return messageRepository.findMessageInChattingRoom(roomId);
     }
 
-    public void commitMessageQueue(Queue<Message> messageQueue) {
+    private void commitMessageQueue(Queue<Message> messageQueue) {
         //쓰기 지연
         for (int i = 0; i < messageQueue.size(); i++) {
             Message message = messageQueue.poll();
