@@ -42,6 +42,7 @@ public class MessageService implements DisposableBean {
             Queue<Message> q = new LinkedList<>();
             q.add(message);
             messageMap.put(roomId, q);
+            //캐시가 없다면 DB 에서 가져와 캐시에 저장하는 로직 필요
         }
         else {
             Queue<Message> mQueue = messageMap.get(roomId);
@@ -65,10 +66,6 @@ public class MessageService implements DisposableBean {
              * 서버를 종료할 때 메모리에 있는 데이터를 DB로 commit
              */
         }
-        
-        
-        
-        //if(messageQueue.size() == messageQueueSize) commitMessageQueue();
     }
 
     public List<Message> getMessages(Long roomId) {
