@@ -33,7 +33,7 @@ public class MessageService implements DisposableBean {
     }
 
 
-    private void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
+    public void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
 
         Message message = new Message(type, roomId, senderId, detailMessage);
         //messageQueue.add(message);
