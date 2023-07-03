@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 @Service
 @Transactional
@@ -38,6 +35,10 @@ public class MessageService {
         Message message = new Message(Message.MessageType.TALK, roomId, senderId, detailMessage);
         messageQueue.add(message);
         if(messageQueue.size() == messageQueueSize) commitMessageQueue();
+    }
+
+    public List<Message> getMessages(Long roomId) {
+        return messageRepository.findMessageInChattingRoom(roomId);
     }
 
     public void commitMessageQueue() {
