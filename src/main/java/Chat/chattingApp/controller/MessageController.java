@@ -19,14 +19,9 @@ public class MessageController {
     private final MessageService messageService;
     private final SimpMessageSendingOperations sendingOperations;
 
-    @PostMapping("/sendMessage")
-    public void sendMessage(@RequestBody SendMessage request){
-        //DB 저장로직
-        messageService.saveMessage(Message.MessageType.TALK,request.roomId, request.detailMessage, request.senderId);
-    }
 
     @MessageMapping("/message")
-    public void enter(SendMessage message) {
+    public void sendMessage(SendMessage message) {
         if (Message.MessageType.ENTER.equals(message.getType())) {
             message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
             messageService.saveMessage(Message.MessageType.ENTER,message.roomId, message.detailMessage, message.senderId);
