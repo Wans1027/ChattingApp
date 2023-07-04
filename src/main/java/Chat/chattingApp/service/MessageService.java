@@ -61,7 +61,7 @@ public class MessageService implements DisposableBean {
         }
     }
 
-    public List<Message> getMessages(Long roomId) {
+    public List<Message> getMessagesInDB(Long roomId) {
         return messageRepository.findMessageInChattingRoom(roomId);
     }
 

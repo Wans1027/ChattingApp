@@ -41,7 +41,7 @@ class MessageServiceTest {
         }
 
         stopWatch.start("DB");
-        messageService.getMessages(1L);
+        messageService.getMessagesInDB(1L);
         stopWatch.stop();
 
         stopWatch.start("Cache");
