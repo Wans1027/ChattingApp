@@ -19,10 +19,8 @@ import java.util.*;
 public class MessageService implements DisposableBean {
 
     private final MessageRepository messageRepository;
-    //private static final Queue<Message> messageQueue = new LinkedList<>();
     private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
     private final EntityManager em;
-    private static final int messageQueueSize = 5;
 
     public MessageDto messageType(MessageDto message) {
         if (Message.MessageType.ENTER.equals(message.getType())) {
@@ -32,11 +30,16 @@ public class MessageService implements DisposableBean {
         return message;
     }
 
+    /**
+     * 상황가정
+     * 채팅방에 들어왔는데 캐시가 없다?
+     *
+     */
+
 
     public void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
 
         Message message = new Message(type, roomId, senderId, detailMessage);
-        //messageQueue.add(message);
 
         if(!messageMap.containsKey(roomId)){
             Queue<Message> q = new LinkedList<>();
@@ -55,16 +58,6 @@ public class MessageService implements DisposableBean {
                 commitMessageQueue(q);
             }
             messageMap.put(roomId, mQueue);
-
-            //큐에 저장된걸 DB 에 언제 넘겨줘야 할까???
-            /*
-             * 큐가 50개 쌓이면 그중 20개 DB행
-             *
-             * 메세지를 가져올 때
-             * 메모리를 먼저 조회
-             * 없다면 DB를 조회
-             * 서버를 종료할 때 메모리에 있는 데이터를 DB로 commit
-             */
         }
     }
 
