@@ -60,6 +60,21 @@ public class MessageService implements DisposableBean {
             messageMap.put(roomId, mQueue);
         }
     }
+    public List<Message> getMessages(Long roomId){
+        List<Message> messageList;
+        if(!messageMap.containsKey(roomId)){
+            //캐시에 없다면 DB 에서 불러와 캐시에 저장 (Cache Miss)
+            List<Message> messagesInDB = getMessagesInDB(roomId);
+            Queue<Message> q = new LinkedList<>(messagesInDB);
+            messageMap.put(roomId, q);
+            messageList = messagesInDB;
+        }
+        else {
+            //Cache Hit
+            messageList = getMessagesInCache(roomId);
+        }
+        return messageList;
+    }
 
     public List<Message> getMessagesInDB(Long roomId) {
         return messageRepository.findMessageInChattingRoom(roomId);
