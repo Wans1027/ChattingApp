@@ -16,6 +16,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query("select m from Message m where m.chattingRoomId = :roomId")
     List<Message> findMessageInChattingRoom(@Param("roomId") Long roomId);
 
-    @Query("select n from (select m from Message m where m.chattingRoomId = :roomId order by m.id desc limit :num) n order by n.id") //sub 쿼리
+    //@Query("select n from (select m from Message m where m.chattingRoomId = :roomId order by m.id desc limit :num) n order by n.id") //JPQL from 절 subQuery 사용 불가
+    @Query("select m from Message m where m.chattingRoomId = :roomId order by m.id desc limit :num")
     List<Message> findNumberOfMessageInChattingRoom(@Param("roomId") Long roomId, @Param("num") int num);
 }
