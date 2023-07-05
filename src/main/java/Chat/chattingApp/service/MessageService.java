@@ -17,7 +17,6 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class MessageService implements DisposableBean {
-
     private final MessageRepository messageRepository;
     private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
     private final EntityManager em;
@@ -33,7 +32,10 @@ public class MessageService implements DisposableBean {
     /**
      * 상황가정
      * 채팅방에 들어왔는데 캐시가 없다?
+     * DB 에서 꺼내 캐시에 저장
      *
+     * 처음채팅방을 만들면
+     * 꺼내올 필요가 없지???
      */
 
 
@@ -72,6 +74,7 @@ public class MessageService implements DisposableBean {
         else {
             //Cache Hit
             messageList = getMessagesInCache(roomId);
+            Collections.reverse(messageList);
         }
         return messageList;
     }
