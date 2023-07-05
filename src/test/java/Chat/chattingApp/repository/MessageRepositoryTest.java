@@ -43,13 +43,12 @@ class MessageRepositoryTest {
         for (int i = 0; i < 10000; i++) {
             messageRepository.save(new Message(TALK, 1L,1L,"Message"));
         }
-        stopWatch.start("DB");
+        stopWatch.start("서버에서 List 뒤집기");
         List<Message> messageList = messageRepository.findNumberOfMessageInChattingRoom(1L, 10);
         Collections.reverse(messageList);
         stopWatch.stop();
 
-        stopWatch.start("DBB");
-        //List<Message> messageList2 = messageRepository.findNumberOfMessageInChattingRoom(1L, 10);
+        stopWatch.start("Query 에서 order by로 재정렬");
         List<Message> numberOfMessageInChattingRoomNotReverse = messageRepository.findNumberOfMessageInChattingRoomNotReverse(1L, 10);
         stopWatch.stop();
 
