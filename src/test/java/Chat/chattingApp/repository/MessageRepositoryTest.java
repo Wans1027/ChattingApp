@@ -49,7 +49,11 @@ class MessageRepositoryTest {
         stopWatch.stop();
 
         stopWatch.start("Query 에서 order by로 재정렬");
-        List<Message> numberOfMessageInChattingRoomNotReverse = messageRepository.findNumberOfMessageInChattingRoomNotReverse(1L, 10);
+        List<Message> numberOfMessageInChattingRoomNotReverse = messageRepository.findNumberOfMessageInChattingRoomReverse(1L, 10);
+        stopWatch.stop();
+
+        stopWatch.start("List 뒤집기 X");
+        List<Message> messageList2 = messageRepository.findNumberOfMessageInChattingRoom(1L, 10);
         stopWatch.stop();
 
         System.out.println(stopWatch.prettyPrint());
@@ -60,7 +64,7 @@ class MessageRepositoryTest {
         for (int i = 0; i < 100; i++) {
             messageRepository.save(new Message(TALK, 1L,1L,"Message"));
         }
-        List<Message> numberOfMessageInChattingRoomNotReverse = messageRepository.findNumberOfMessageInChattingRoomNotReverse(1L, 10);
+        List<Message> numberOfMessageInChattingRoomNotReverse = messageRepository.findNumberOfMessageInChattingRoomReverse(1L, 10);
         for (Message message : numberOfMessageInChattingRoomNotReverse) {
             System.out.println(message.getId());
         }
