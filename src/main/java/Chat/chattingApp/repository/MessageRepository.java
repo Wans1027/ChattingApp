@@ -21,6 +21,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findNumberOfMessageInChattingRoom(@Param("roomId") Long roomId, @Param("num") int num);
 
     @Query(value = "select * from (select * from message where chatting_room_Id = :roomId order by message_id desc limit :num) n order by n.message_id", nativeQuery = true)
-    List<Message> findNumberOfMessageInChattingRoomNotReverse(@Param("roomId") Long roomId, @Param("num") int num);
+    List<Message> findNumberOfMessageInChattingRoomReverse(@Param("roomId") Long roomId, @Param("num") int num);
 
 }

@@ -74,13 +74,12 @@ public class MessageService implements DisposableBean {
         else {
             //Cache Hit
             messageList = getMessagesInCache(roomId);
-            Collections.reverse(messageList);
         }
         return messageList;
     }
 
     public List<Message> getMessagesInDB(Long roomId) {
-        return messageRepository.findMessageInChattingRoom(roomId);
+        return messageRepository.findNumberOfMessageInChattingRoomReverse(roomId,30);
     }
 
     public List<Message> getMessagesInCache(Long roomId){
