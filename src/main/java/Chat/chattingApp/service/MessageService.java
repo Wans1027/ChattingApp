@@ -21,6 +21,11 @@ public class MessageService implements DisposableBean {
     private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
     private final EntityManager em;
 
+    /**
+     * TODO
+     * static 의 단점을 생각해보자
+     */
+
     public MessageDto messageType(MessageDto message) {
         if (Message.MessageType.ENTER.equals(message.getType())) {
             message.setDetailMessage(message.getSenderId()+"님이 입장하였습니다.");
