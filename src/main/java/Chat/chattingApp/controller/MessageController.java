@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -25,6 +25,12 @@ public class MessageController {
     public void sendMessage(MessageDto message) {
         MessageDto messageDto = messageService.messageType(message);
         sendingOperations.convertAndSend("/topic/chat/room/"+messageDto.getRoomId(),message);
+    }
+
+    @GetMapping("/message/{chattingRoomId}")
+    public List<MessageDto> loadMessagesChattingRoom(@PathVariable long chattingRoomId){
+        List<Message> messages = messageService.getMessages(chattingRoomId);
+        return messages.stream().map(message -> new MessageDto(message.getType(), message.getChattingRoomId(), message.getDetailMessage(), message.getSenderId())).toList();
     }
 
 }
