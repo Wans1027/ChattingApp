@@ -20,6 +20,9 @@ public class MessageService implements DisposableBean {
     private final MessageRepository messageRepository;
     private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
     private final EntityManager em;
+    private static final int transactionMessageSize = 20;//트랜잭션에 묶일 메세지 양
+    private static final int messagePageableSize = 30; //roomId에 종속된 큐에 보관할 메세지의 양
+
 
     /**
      * TODO
@@ -57,9 +60,9 @@ public class MessageService implements DisposableBean {
         else {
             Queue<Message> mQueue = messageMap.get(roomId);
             mQueue.add(message);
-            if(mQueue.size() > 50){
+            if (mQueue.size() > transactionMessageSize + messagePageableSize) {
                 Queue<Message> q = new LinkedList<>();
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < transactionMessageSize; i++) {
                     q.add(mQueue.poll());
                 }
                 commitMessageQueue(q);
@@ -84,7 +87,7 @@ public class MessageService implements DisposableBean {
     }
 
     public List<Message> getMessagesInDB(Long roomId) {
-        return messageRepository.findNumberOfMessageInChattingRoomReverse(roomId,30);
+        return messageRepository.findNumberOfMessageInChattingRoomReverse(roomId,messagePageableSize);
     }
 
     public List<Message> getMessagesInCache(Long roomId){
