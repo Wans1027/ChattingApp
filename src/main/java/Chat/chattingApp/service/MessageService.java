@@ -24,10 +24,6 @@ public class MessageService implements DisposableBean {
     private static final int messagePageableSize = 30; //roomId에 종속된 큐에 보관할 메세지의 양
 
 
-    /**
-     * TODO
-     * static 의 단점을 생각해보자
-     */
 
     public MessageDto messageType(MessageDto message) {
         if (Message.MessageType.ENTER.equals(message.getType())) {
@@ -37,14 +33,6 @@ public class MessageService implements DisposableBean {
         return message;
     }
 
-    /**
-     * 상황가정
-     * 채팅방에 들어왔는데 캐시가 없다?
-     * DB 에서 꺼내 캐시에 저장
-     *
-     * 처음채팅방을 만들면
-     * 꺼내올 필요가 없지???
-     */
 
 
     public void saveMessage(Message.MessageType type, Long roomId, String detailMessage, Long senderId) {
@@ -52,14 +40,15 @@ public class MessageService implements DisposableBean {
         Message message = new Message(type, roomId, senderId, detailMessage);
 
         if(!messageMap.containsKey(roomId)){
+            //채팅방에 처음쓰는 글이라면 캐시가 없으므로 캐시를 생성
             Queue<Message> q = new LinkedList<>();
             q.add(message);
             messageMap.put(roomId, q);
-            //캐시가 없다면 DB 에서 가져와 캐시에 저장하는 로직 필요
         }
         else {
             Queue<Message> mQueue = messageMap.get(roomId);
             mQueue.add(message);
+            //캐시 쓰기 전략 (Write Back 패턴)
             if (mQueue.size() > transactionMessageSize + messagePageableSize) {
                 Queue<Message> q = new LinkedList<>();
                 for (int i = 0; i < transactionMessageSize; i++) {
@@ -71,10 +60,14 @@ public class MessageService implements DisposableBean {
         }
     }
     public List<Message> getMessages(Long roomId){
-        List<Message> messageList;
+        //캐시 읽기 전략 (LookAside 패턴)
+        List<Message> messageList = new ArrayList<>();
         if(!messageMap.containsKey(roomId)){
-            //캐시에 없다면 DB 에서 불러와 캐시에 저장 (Cache Miss)
+            //Cache Miss
             List<Message> messagesInDB = getMessagesInDB(roomId);
+            //DB 에도 없다면 새로 만든 방이므로 빈 리스트를 반환
+            if(messagesInDB.isEmpty()) return messageList;
+            //DB 에서 가져온 데이터를 Cache 에 적재
             Queue<Message> q = new LinkedList<>(messagesInDB);
             messageMap.put(roomId, q);
             messageList = messagesInDB;
