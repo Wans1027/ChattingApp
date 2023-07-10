@@ -32,4 +32,8 @@ public class RedisMessageCache {
         return get(Long.valueOf(Objects.requireNonNull(redisTemplate.randomKey())));
     }
 
+    public void deleteKey(Long roomId){
+        redisTemplate.delete(roomId.toString());
+    }
+
 }

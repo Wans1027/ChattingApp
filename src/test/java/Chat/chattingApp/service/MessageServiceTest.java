@@ -1,6 +1,7 @@
 package Chat.chattingApp.service;
 
 import Chat.chattingApp.entity.Message;
+import Chat.chattingApp.redis.RedisMessageCache;
 import Chat.chattingApp.repository.MessageRepository;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,8 @@ class MessageServiceTest {
 
     @Autowired
     MessageService messageService;
+    @Autowired
+    RedisMessageCache redisMessageCache;
 
     private StopWatch stopWatch;
 
