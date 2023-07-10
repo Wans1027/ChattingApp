@@ -89,7 +89,7 @@ public class MessageService implements DisposableBean {
         return messageMap.get(roomId).stream().toList();
     }
 
-    private void commitMessageQueue(Queue<Message> messageQueue) {
+    public void commitMessageQueue(Queue<Message> messageQueue) {
         //쓰기 지연
         for (int i = 0; i < messageQueue.size(); i++) {
             Message message = messageQueue.poll();
