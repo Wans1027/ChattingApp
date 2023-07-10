@@ -15,19 +15,20 @@ import java.util.concurrent.TimeUnit;
 public class RedisMessageCache {
     private final RedisTemplate<String, LinkedList<Message>> redisTemplate;
 
-    public void put(Long roomId, LinkedList<Message> messageQueue){
-        redisTemplate.opsForValue().set(roomId.toString(), messageQueue);
-        redisTemplate.expire(roomId.toString(), 60, TimeUnit.MINUTES);
+    public void put(Long roomId, Queue<Message> messageQueue){
+        redisTemplate.opsForValue().set(roomId.toString(), new LinkedList<>(messageQueue));
+        redisTemplate.expire(roomId.toString(), 1, TimeUnit.MINUTES);
     }
 
     public boolean containsKey(Long roomId){
         return Boolean.TRUE.equals(redisTemplate.hasKey(roomId.toString()));
     }
     public LinkedList<Message> get(Long roomId){
+
         return redisTemplate.opsForValue().get(roomId.toString());
     }
 
-    public Queue<Message> getValues(){
+    public Queue<Message> values(){
         return get(Long.valueOf(Objects.requireNonNull(redisTemplate.randomKey())));
     }
 
