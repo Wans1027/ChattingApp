@@ -52,5 +52,7 @@ class MessageServiceTest {
         stopWatch.stop();
 
         System.out.println(stopWatch.prettyPrint());
+
+        redisMessageCache.deleteKey(1L);
     }
 }

@@ -35,5 +35,8 @@ public class RedisMessageCache {
     public void deleteKey(Long roomId){
         redisTemplate.delete(roomId.toString());
     }
+    public void deleteAll(){
+        redisTemplate.discard();
+    }
 
 }
