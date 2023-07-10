@@ -2,6 +2,7 @@ package Chat.chattingApp.service;
 
 import Chat.chattingApp.dto.MessageDto;
 import Chat.chattingApp.entity.Message;
+import Chat.chattingApp.redis.RedisMessageCache;
 import Chat.chattingApp.repository.MemberRepository;
 import Chat.chattingApp.repository.MessageRepository;
 import jakarta.persistence.EntityManager;
@@ -18,7 +19,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MessageService implements DisposableBean {
     private final MessageRepository messageRepository;
-    private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
+    //private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
+    private final RedisMessageCache messageMap;
     private final EntityManager em;
     private static final int transactionMessageSize = 20;//트랜잭션에 묶일 메세지 양
     private static final int messagePageableSize = 30; //roomId에 종속된 큐에 보관할 메세지의 양
@@ -100,8 +102,8 @@ public class MessageService implements DisposableBean {
     @Override
     public void destroy() throws Exception {
         //MessageService Bean 이 삭제될때 즉 서버가 shutDown 될때 동작
-        for (Queue<Message> messages : messageMap.values()) {
+        /*for (Queue<Message> messages : messageMap.values()) {
             commitMessageQueue(messages);
-        }
+        }*/
     }
 }
