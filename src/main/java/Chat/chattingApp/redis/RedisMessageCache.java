@@ -1,6 +1,7 @@
 package Chat.chattingApp.redis;
 
 import Chat.chattingApp.entity.Message;
+import Chat.chattingApp.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,13 +16,16 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisMessageCache {
     private final RedisTemplate<String, LinkedList<Message>> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplateName;
+    private final MessageRepository messageRepository;
 
     @Value("${spring.redis.expire}")
     private int expireTime;
 
     public void put(Long roomId, Queue<Message> messageQueue){
         redisTemplate.opsForValue().set(roomId.toString(), new LinkedList<>(messageQueue));
-        redisTemplate.expire(roomId.toString(), expireTime, TimeUnit.SECONDS);
+        redisTemplateName.opsForValue().set("room"+roomId, "");
+        redisTemplateName.expire("room"+roomId.toString(), expireTime, TimeUnit.SECONDS);
     }
 
     public boolean containsKey(Long roomId){
