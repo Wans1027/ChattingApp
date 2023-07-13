@@ -46,13 +46,4 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    @Bean
-    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory redisConnectionFactory, ExpirationListener expirationListener) {
-        RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
-        redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory);
-        String PATTERN = "__keyevent@*__:expired";
-        redisMessageListenerContainer.addMessageListener(expirationListener, new PatternTopic(PATTERN));
-        redisMessageListenerContainer.setErrorHandler(e -> log.error("There was an error in redis key expiration listener container", e));
-        return redisMessageListenerContainer;
-    }
 }

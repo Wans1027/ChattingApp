@@ -28,6 +28,9 @@ class MessageServiceTest {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    MessageServiceLocalCache messageServiceLocalCache;
     @Autowired
     RedisMessageCache redisMessageCache;
 
@@ -39,16 +42,22 @@ class MessageServiceTest {
         for (int i = 0; i < 30; i++) {
             //DB 저장
             messageRepository.save(new Message(TALK, 1L,1L,"Message"));
-            //Memory 저장
+            //RedisCache
             messageService.saveMessage(TALK, 1L, "Message", 1L);
+            //LocalCache
+            messageServiceLocalCache.saveMessage(TALK, 1L, "Message", 1L);
         }
 
         stopWatch.start("DB");
         messageService.getMessagesInDB(1L);
         stopWatch.stop();
 
-        stopWatch.start("Cache");
+        stopWatch.start("RedisCache");
         messageService.getMessagesInCache(1L);
+        stopWatch.stop();
+
+        stopWatch.start("LocalCache");
+        messageServiceLocalCache.getMessagesInCache(1L);
         stopWatch.stop();
 
         System.out.println(stopWatch.prettyPrint());
