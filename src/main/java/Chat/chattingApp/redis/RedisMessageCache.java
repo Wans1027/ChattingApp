@@ -21,7 +21,7 @@ public class RedisMessageCache {
 
     public void put(Long roomId, Queue<Message> messageQueue){
         redisTemplate.opsForValue().set(roomId.toString(), new LinkedList<>(messageQueue));
-        redisTemplate.expire(roomId.toString(), expireTime, TimeUnit.MINUTES);
+        redisTemplate.expire(roomId.toString(), expireTime, TimeUnit.SECONDS);
     }
 
     public boolean containsKey(Long roomId){
