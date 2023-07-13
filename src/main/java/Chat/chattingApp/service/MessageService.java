@@ -6,6 +6,9 @@ import Chat.chattingApp.redis.RedisMessageCache;
 import Chat.chattingApp.repository.MemberRepository;
 import Chat.chattingApp.repository.MessageRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MessageService implements DisposableBean {
+public class MessageService {
     private final MessageRepository messageRepository;
     //private static final Map<Long, Queue<Message>> messageMap = new HashMap<>();
     private final RedisMessageCache messageMap;
@@ -91,19 +94,10 @@ public class MessageService implements DisposableBean {
 
     public void commitMessageQueue(Queue<Message> messageQueue) {
         //쓰기 지연
-        for (int i = 0; i < messageQueue.size(); i++) {
-            Message message = messageQueue.poll();
+        for (Message message : messageQueue) {
             em.persist(message);
-
         }
         em.flush();
     }
 
-    @Override
-    public void destroy() throws Exception {
-        //MessageService Bean 이 삭제될때 즉 서버가 shutDown 될때 동작
-        /*for (Queue<Message> messages : messageMap.values()) {
-            commitMessageQueue(messages);
-        }*/
-    }
 }
