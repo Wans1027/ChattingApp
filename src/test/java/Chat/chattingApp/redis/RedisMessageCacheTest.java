@@ -19,16 +19,21 @@ class RedisMessageCacheTest {
     @Autowired RedisMessageCache redisMessageCache;
 
     @Test
-    void put() {
+    void put() throws InterruptedException {
         Message message = new Message(TALK, 1L,1L,"Message");
         Queue<Message> q = new LinkedList<>();
         q.add(message);
         q.add(new Message(TALK, 1L,1L,"Message2"));
+        q.add(new Message(TALK, 1L,1L,"Message3"));
 
         redisMessageCache.put(1L, q);
         LinkedList<Message> messages = redisMessageCache.get(1L);
-        for (Message message1 : messages) {
-            System.out.println(message1.getDetailMessage());
-        }
+
+        Thread.sleep(6000);
+        Queue<Message> q1 = new LinkedList<>();
+        q1.add(message);
+        q1.add(new Message(TALK, 1L,1L,"Message4"));
+        q1.add(new Message(TALK, 1L,1L,"Message5"));
+        redisMessageCache.put(1L, q1);
     }
 }
