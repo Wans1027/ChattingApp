@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Primary;
 
 public class LoadBalanceConfiguration {
     @Bean
-    @Primary
+    //@Primary
     ServiceInstanceListSupplier serviceInstanceListSupplier() {
         return new DemoServiceInstanceListSuppler("chatting");
     }

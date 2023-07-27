@@ -3,20 +3,21 @@ package chattingAppLoadBalancer.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequiredArgsConstructor
 @Slf4j
 public class UserController {
     private final WebClient.Builder loadBalancedWebClientBuilder;
     private final ReactorLoadBalancerExchangeFilterFunction lbFunction;
 
+    public UserController(WebClient.Builder webClientBuilder,
+                           ReactorLoadBalancerExchangeFilterFunction lbFunction) {
+        this.loadBalancedWebClientBuilder = webClientBuilder;
+        this.lbFunction = lbFunction;
+    }
     @RequestMapping("/hi")
     public Mono<String> hi(@RequestParam(value = "name", defaultValue = "Mary") String name) {
         return loadBalancedWebClientBuilder.build().get().uri("http://chatting/greeting")
@@ -24,12 +25,15 @@ public class UserController {
                 .map(greeting -> String.format("%s, %s!", greeting, name));
     }
 
-    @RequestMapping("/send")
-    public Mono<String> pub() {
-        return loadBalancedWebClientBuilder.build().get().uri("ws://chatting/ws/chat")
+    @GetMapping("/request/{uriTail}")
+    public Mono<String> test(@PathVariable String uriTail) {
+        log.info("Address http://localhost:0000/request/{}",uriTail);
+        return loadBalancedWebClientBuilder.build().get().uri("http://chatting/" + uriTail)
                 .retrieve().bodyToMono(String.class);
-        //.map(greeting -> String.format("%s, %s!", greeting, name));
+
     }
+
+
 
     @RequestMapping("/message")
     public Mono<String> message() {
