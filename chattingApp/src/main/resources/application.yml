@@ -19,3 +19,6 @@ spring:
     host: 127.0.0.1
     port: 6379
     expire: 5
+
+server:
+  port: 8080

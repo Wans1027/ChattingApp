@@ -1,4 +1,4 @@
-package Chat.chattingApp.websocket;
+package chattingAppLoadBalancer.websocket;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ public class StompHandler implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        //log.info("Stomp Handler 실행");
+        log.info("Stomp Handler 실행");
         return message;
     }
 }

@@ -23,8 +23,10 @@ public class MessageController {
 
     @MessageMapping("/message")
     public void sendMessage(MessageDto message) {
-        MessageDto messageDto = messageService.messageType(message);
-        sendingOperations.convertAndSend("/topic/chat/room/"+messageDto.getRoomId(),message);
+        //MessageDto messageDto = messageService.messageType(message);
+        //sendingOperations.convertAndSend("/topic/chat/room/"+messageDto.getRoomId(),message);
+        log.info("messageMapping available 성공");
+        sendingOperations.convertAndSend("/topic/"+message.getRoomId(),message);
     }
 
     @GetMapping("/message/{chattingRoomId}")
