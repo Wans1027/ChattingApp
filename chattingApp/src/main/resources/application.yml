@@ -20,5 +20,8 @@ spring:
     port: 6379
     expire: 5
 
+  application:
+    name: chatting
+
 server:
   port: 8080

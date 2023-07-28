@@ -1,6 +1,7 @@
 package Chat.chattingApp.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,8 @@ import java.util.Random;
 @RestController
 @Slf4j
 public class TestController {
+    @Value("${server.port}")
+    int port;
     @GetMapping("/test/testing")
     public void test1() {
         log.info("test1 성공");
@@ -22,8 +25,9 @@ public class TestController {
     }
 
     @GetMapping("/test")
-    public void test3() {
-        log.info("test3 성공");
+    public String test3() {
+        log.info("test 성공");
+        return (port+"포트로 전송됨");
     }
 
     @GetMapping("/greeting")

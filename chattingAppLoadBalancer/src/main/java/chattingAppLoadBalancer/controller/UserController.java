@@ -1,6 +1,5 @@
 package chattingAppLoadBalancer.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +30,12 @@ public class UserController {
         return loadBalancedWebClientBuilder.build().get().uri("http://chatting/" + uriTail)
                 .retrieve().bodyToMono(String.class);
 
+    }
+
+    @GetMapping("/request2/{uriTail}")
+    public Mono<Void> test2(@PathVariable String uriTail) {
+        log.info("Address http://localhost:0000/request/{}",uriTail);
+        return loadBalancedWebClientBuilder.build().get().uri("http://chatting/" + uriTail).retrieve().bodyToMono(Void.class);
     }
 
 
