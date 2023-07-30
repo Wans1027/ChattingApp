@@ -21,7 +21,15 @@ spring:
     expire: 5
 
   application:
-    name: chatting
+    name: chattingservice
 
 server:
   port: 8080
+
+eureka:
+  instance:
+    # 표기되는 규칙 변경
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka

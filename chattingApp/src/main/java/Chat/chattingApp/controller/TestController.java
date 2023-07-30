@@ -40,4 +40,9 @@ public class TestController {
         int randomNum = rand.nextInt(greetings.size());
         return greetings.get(randomNum);
     }
+
+    @GetMapping("/welcome")
+    public String welcome(){
+        return "welcome to the first service";
+    }
 }
