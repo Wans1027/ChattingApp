@@ -14,8 +14,8 @@ spring:
       routes: # 라우팅 설정
         - id: chatting-service # 구분하기 위한 id값으로 임의로 작성해도 무관
           predicates: # 조건
-            - Path=/chatting-service/** # first-service/ 으로 요청이 들어오면
-          uri: lb://CHATTINGSERVICE # 유레카 서버에서 MY-FIRST-SERVICE를 찾아서 그곳으로 요청을 보낸다.
+            - Path=/chatting-service/** # chatting-service/ 으로 요청이 들어오면
+          uri: lb://CHATTINGSERVICE # 유레카 서버에서 CHATTINGSERVICE 를 찾아서 그곳으로 요청을 보낸다.
           filters:
             # url 재정의
             # ?<변수명>은 뒤에 나오는 정규식을 변수처럼 사용할 수 있도록 한다. ()는 하나의 묶음 처리 -> segment는 (.*)를 의미
